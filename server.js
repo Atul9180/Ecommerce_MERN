@@ -1,0 +1,36 @@
+import colors from 'colors';
+import dotenv from 'dotenv';
+import express from 'express';
+import morgan from 'morgan';
+import connectDB from './config/db.js';
+import authRoutes from './routes/authRoute.js';
+
+
+dotenv.config();
+connectDB();
+
+//rest object
+const app = express()
+
+//middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(morgan('dev'));
+
+
+//routes
+app.use('/api/v1/auth', authRoutes);
+
+
+//rest api
+app.get('/', (req, res) => {
+    res.send(`<h1>Atul</h1>`);
+});
+
+
+
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+    console.log(`Server Running on port ${port} on ${process.env.DEV_MODE} mode`.bgCyan.white);
+});
