@@ -1,6 +1,8 @@
 // import logo from './logo.svg';
 import { Routes, Route } from "react-router-dom";
 import { HomePage, Register, PageNotFound, Contact, About, Policy } from './pages';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
