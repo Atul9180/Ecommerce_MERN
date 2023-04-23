@@ -1,8 +1,11 @@
 import React,{useState} from "react";
+import '../../styles/AuthStyles.css';
 import Layout from "../../components/Layout/Layout";
 import {toast} from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+
 
 const Register = () => {
         const [name,setName]=useState("");
@@ -12,29 +15,32 @@ const Register = () => {
         const [address,setAddress]=useState("");
         const navigate = useNavigate()
 
+
 const handleFormSubmit=async (e)=>{
     e.preventDefault();
     try{
-        const res= await axios.post('http://localhost:8080/api/v1/auth/register',{ name, email, password, phone, address });
-        if(res.data.success){
-            toast.success(res.data.message);
-            setTimeout(() => navigate('/contact'), 3000); 
+        const res= await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/register`,{ name, email, password, phone, address });
+        if(res && res.data.success){
+            toast.success(res.data && res.data.message);
+            setTimeout(()=>navigate('/login'),3000); 
         }
         else{
-            toast.error(res.data.success);
+            toast.error(res.data.message);
         }
     }catch(err){
 console.log(err)
-toast.error('Something went wrong');
+toast.error(err.response.data.message);
     }
 }
 
 
+
 return (
-    <Layout title="Register||E-Shop">
-      <div className="register">
-        <h1>Register</h1>
+    <Layout title="Register || E-Shop">
+    
+      <div className="form-container">
         <form onSubmit={handleFormSubmit}>
+        <h4 className="title">REGISTER FORM</h4>
           <div className="mb-3">
             <input
               type="text"
@@ -96,6 +102,7 @@ return (
           </button>
         </form>
       </div>
+
     </Layout>
   );
 };
