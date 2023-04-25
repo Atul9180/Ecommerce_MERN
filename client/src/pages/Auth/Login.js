@@ -2,24 +2,31 @@ import React,{useState} from "react";
 import '../../styles/AuthStyles.css';
 import Layout from "../../components/Layout/Layout";
 import {toast} from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/auth";
 
 
 const Login = () => {
         const [email,setEmail]=useState("");
-        const [password,setpassword]=useState("");
+        const [password,setPassword]=useState("");
+        const [auth,setAuth]=useAuth();
         const navigate = useNavigate()
-
+        const location =useLocation()
 
 const handleFormSubmit=async (e)=>{
     e.preventDefault();
     try{
         const res= await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`,{ email, password});
         if(res.data.success){
-            // const {message, token, user} = res.data;
             toast.success(res.data.message);
-            setTimeout(()=>navigate('/'),1000); 
+            setAuth({
+                ...auth,
+                user:res.data.user,
+                token:res.data.token,
+            })
+            localStorage.setItem('auth',JSON.stringify(res.data))
+            setTimeout(()=>navigate(location.state||'/'),1000); 
         }
         else{
             toast.error(res.data.success);
@@ -52,7 +59,7 @@ return (
             <input
               type="password"
               value={password}
-              onChange={(e)=>setpassword(e.target.value)}
+              onChange={(e)=>setPassword(e.target.value)}
               className="form-control"
               id="inputPassword"
                placeholder="Enter your Password"
@@ -62,6 +69,13 @@ return (
           <button type="submit" className="btn btn-primary">
             Login
           </button>
+          <div className="mt-1">
+            <button type="button" className="btn btn-danger" onClick={()=>{
+            navigate('/forgot-password')}}>
+            Forgot Password
+          </button>
+          </div>
+           
         </form>
       </div>
       
