@@ -8,3 +8,6 @@ export { default as ForgotPassword } from './Auth/ForgotPassword';
 export { default as Login } from './Auth/Login';
 export { default as Dashboard } from './user/Dashboard';
 export { default as AdminDashboard} from './Admin/AdminDashboard';
+export { default as CreateProduct} from './Admin/CreateProduct';
+export { default as CreateCategory} from './Admin/CreateCategory';
+export { default as Users} from './Admin/Users';
