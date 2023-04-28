@@ -5,6 +5,7 @@ import PrivateRoute from "./components/Routes/PrivateRoute";
 import AdminRoute from "./components/Routes/AdminRoute";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
+import Search from "./pages/Search";
 
 
 
@@ -16,6 +17,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />
           <Route path="user/profile" element={<Profile />} />

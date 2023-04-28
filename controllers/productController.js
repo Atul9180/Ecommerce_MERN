@@ -224,3 +224,25 @@ export const productListController = async (req, res) => {
     });
   }
 };
+
+
+//@desc: search product controller
+export const productSearchController= async (req,res)=>{
+try{
+    const {keyword}=req.params;
+    const results =await productModel.find({ 
+        $or: [
+            {name:{$regex:keyword,$options:"i"}},    //search in either of name or description based on regex keyword making it   caseinsensitive
+            {description:{$regex:keyword,$options:"i"}}
+        ]
+    }).select("-photo")
+    res.json(results)
+} catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in searching Product",
+      error,
+    });
+  }
+};
