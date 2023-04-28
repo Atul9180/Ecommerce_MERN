@@ -11,3 +11,5 @@ export { default as AdminDashboard} from './Admin/AdminDashboard';
 export { default as CreateProduct} from './Admin/CreateProduct';
 export { default as CreateCategory} from './Admin/CreateCategory';
 export { default as Users} from './Admin/Users';
+export { default as Products} from './Admin/Products';
+export { default as UpdateProduct} from './Admin/UpdateProduct';

@@ -98,3 +98,9 @@
   align-items: center;
   justify-content: center;
 }
+
+/*===============Admin all products Page==========*/
+.product-link {
+  text-decoration: none !important;
+  color: black !important;
+}
