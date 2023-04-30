@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout/Layout";
 import UserMenu from "../../components/Layout/UserMenu";
 import { useAuth } from "../../context/auth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const Profile = () => {
@@ -13,6 +13,7 @@ const Profile = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  //get and populate user data on load
   useEffect(() => {
     const { email, name, phone, address } = auth?.user;
     setName(name);
