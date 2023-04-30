@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { HomePage, Register,Login ,ForgotPassword,PageNotFound, Contact, About, Policy,Dashboard,AdminDashboard ,CreateCategory,CreateProduct,UpdateProduct,Products, Users} from './pages';
+import { HomePage, Register,Login ,ForgotPassword,Cart,PageNotFound, Contact, About, Policy,Dashboard,AdminDashboard ,CreateCategory,CreateProduct,UpdateProduct,Products, Users,Categories, CategoryProducts} from './pages';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from "./components/Routes/PrivateRoute";
 import AdminRoute from "./components/Routes/AdminRoute";
@@ -12,12 +12,13 @@ import ProductDetails from "./pages/ProductDetails";
 
 
 
-
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category/:slug" element={<CategoryProducts />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
@@ -39,6 +40,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
+                <Route path="/cart" element={<Cart />} />
 
 
         <Route path="*" element={<PageNotFound />} />

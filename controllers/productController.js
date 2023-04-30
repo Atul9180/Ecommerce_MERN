@@ -1,4 +1,5 @@
 import productModel from "../models/productModel.js";
+import categoryModel from "../models/categoryModel.js";
 import fs from 'fs';
 import slugify from "slugify";
 
@@ -246,3 +247,38 @@ try{
     });
   }
 };
+
+
+//@desc: similar products 
+export const relatedProductController= async (req,res)=>{
+try{
+    const {pid,cid}=req.params;
+    const products =await productModel.find({ 
+        category:cid,
+        _id:{$ne:pid}
+    }).select("-photo").limit(3).populate("category")    //populate based on category
+    res.status(200).send({success:true,products})
+} catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while getting Similar Products ",
+      error,
+    });
+  }
+};
+
+
+//@desc: categoryWise Products get:
+export const categoryWiseProductsController=async(req,res)=>{
+    try{
+        const category = await categoryModel.findOne({slug:req.params.slug})
+        // const CategoryProducts = await productModel.find({category:category._id})
+        const categoryProducts = await productModel.find({category}).populate('category')
+        res.status(200).send({success:true,message:'Fetched all Products of particular Category',category,categoryProducts})
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).send({success:false,error,message:'Error while getting category products'})
+    }
+}
