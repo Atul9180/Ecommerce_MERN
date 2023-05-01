@@ -62,6 +62,7 @@ const HomePage = () => {
   useEffect(() => {
     if (page === 1) return;
     loadMoreProducts();
+    // eslint-disable-next-line
   }, [page]);
 
   //load more Products
@@ -92,11 +93,12 @@ const HomePage = () => {
     if (!checked.length || !radio.length) {
       getAllProducts();
     }
+    // eslint-disable-next-line
   }, [checked.length, radio.length]);
 
   useEffect(() => {
     if (checked.length || radio.length) getFilteredProducts();
-    //eslint-
+    // eslint-disable-next-line
   }, [checked, radio]);
 
   //get filtered products:

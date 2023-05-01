@@ -1,11 +1,15 @@
+import dotenv from "dotenv";
 import productModel from "../models/productModel.js";
 import categoryModel from "../models/categoryModel.js";
+import orderModel from "../models/orderModel.js";
 import fs from "fs";
 import slugify from "slugify";
 import braintree from "braintree";
 
+dotenv.config();
+
 //set payment gateway--avails token
-let gateway = new braintree.BraintreeGateway({
+const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
@@ -15,7 +19,7 @@ let gateway = new braintree.BraintreeGateway({
 //@desc: get payment braintreetoken controller
 export const braintreeTokenController = async (req, res) => {
   try {
-    await gateway.clientToken.generate({}, function (err, response) {
+    gateway.clientToken.generate({}, function (err, response) {
       if (err) {
         res.status(500).send(err);
       } else {
@@ -30,7 +34,32 @@ export const braintreeTokenController = async (req, res) => {
 //@desc: post: payment verification and confirmation controller->passing order amount etc
 export const braintreePaymentController = async (req, res) => {
   try {
-    const { cart, nonce } = req.body;
+    const { nonce, cart } = req.body;
+    let total = 0;
+    cart.map((i) => {
+      total += i.price;
+    });
+    let newTransaction = gateway.transaction.sale(
+      {
+        amount: total,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (error, result) {
+        if (result) {
+          const order = new orderModel({
+            products: cart,
+            payment: result,
+            buyer: req.user._id,
+          }).save();
+          res.json({ ok: true, order });
+        } else {
+          res.status(500).send(error);
+        }
+      }
+    );
   } catch (error) {
     console.log(error);
   }
