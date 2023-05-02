@@ -1,5 +1,6 @@
 import { hashPassword, comparePassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
+import orderModel from "../models/orderModel.js";
 import JWT from "jsonwebtoken";
 
 //@desc: to register and hash password
@@ -30,12 +31,10 @@ export const registerController = async (req, res) => {
     //check user's existance:
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res
-        .status(200)
-        .send({
-          success: true,
-          message: "Email Id already registered. Please Login",
-        });
+      return res.status(200).send({
+        success: true,
+        message: "Email Id already registered. Please Login",
+      });
     }
 
     //hash Password and save data:
@@ -185,14 +184,75 @@ export const updateProfileController = async (req, res) => {
     );
     res.status(200).send({
       success: true,
-      message: "Profile Updated SUccessfully",
+      message: "Profile Updated Successfully",
       updatedUser,
     });
   } catch (error) {
     console.log(error);
     res.status(400).send({
       success: false,
-      message: "Error WHile Update profile",
+      message: "Error While Updating profile",
+      error,
+    });
+  }
+};
+
+//@desc:Users get All Orders
+//@endpoint: /api/v1/auth/orders
+export const getOrdersController = async (req, res) => {
+  try {
+    const orders = await orderModel
+      .find({ buyer: req.user._id })
+      .populate("products", "-photo")
+      .populate("buyer", "name");
+    res.status(200).json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error While fetching orders",
+      error,
+    });
+  }
+};
+
+//@desc:Admin get All Orders
+//@endpoint: /api/v1/auth/all-orders
+export const getAllOrdersController = async (req, res) => {
+  try {
+    const orders = await orderModel
+      .find({})
+      .populate("products", "-photo")
+      .populate("buyer", "name")
+      .sort({ createdAt: "-1" });
+    res.status(200).json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error While fetching all the orders",
+      error,
+    });
+  }
+};
+
+//@desc:Admin update Order's shipping status
+//@endpoint: /api/v1/auth/order-status/:orderId
+export const setOrderStatusController = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    const orders = await orderModel.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+    res.status(200).json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error While updating order's Shipping status",
       error,
     });
   }

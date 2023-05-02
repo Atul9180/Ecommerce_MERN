@@ -1,16 +1,32 @@
 import { Routes, Route } from "react-router-dom";
-import { HomePage, Register,Login ,ForgotPassword,Cart,PageNotFound, Contact, About, Policy,Dashboard,AdminDashboard ,CreateCategory,CreateProduct,UpdateProduct,Products, Users,Categories, CategoryProducts} from './pages';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  HomePage,
+  Register,
+  Login,
+  ForgotPassword,
+  Cart,
+  AdminOrders,
+  PageNotFound,
+  Contact,
+  About,
+  Policy,
+  Dashboard,
+  AdminDashboard,
+  CreateCategory,
+  CreateProduct,
+  UpdateProduct,
+  Products,
+  Users,
+  Categories,
+  CategoryProducts,
+} from "./pages";
+import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/Routes/PrivateRoute";
 import AdminRoute from "./components/Routes/AdminRoute";
 import Orders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import Search from "./pages/Search";
 import ProductDetails from "./pages/ProductDetails";
-
-
-
-
 
 function App() {
   return (
@@ -30,7 +46,11 @@ function App() {
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
-          <Route path="admin/update-product/:slug" element={<UpdateProduct />} />
+          <Route
+            path="admin/update-product/:slug"
+            element={<UpdateProduct />}
+          />
+          <Route path="admin/orders" element={<AdminOrders />} />
           <Route path="admin/products" element={<Products />} />
           <Route path="admin/users" element={<Users />} />
         </Route>
@@ -40,13 +60,11 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
-                <Route path="/cart" element={<Cart />} />
-
+        <Route path="/cart" element={<Cart />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
-
   );
 }
 

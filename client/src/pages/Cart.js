@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import DropIn from "braintree-web-drop-in-react"; //to get client token for authentication and then sending amount items etc for payment
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../styles/Cart.css";
 
 const Cart = () => {
   const [cart, setCart] = useCart();
@@ -162,7 +163,7 @@ const Cart = () => {
                 )}
               </div>
             )}
-            <div className="mt-2">
+            <div className="mt-2 mb-3">
               {!clientToken || !cart?.length || !auth.token ? (
                 ""
               ) : (

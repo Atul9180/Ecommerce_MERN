@@ -5,6 +5,9 @@ import {
   testController,
   forgotPasswordController,
   updateProfileController,
+  getAllOrdersController,
+  getOrdersController,
+  setOrderStatusController,
 } from "../controllers/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -39,5 +42,22 @@ router.get("/test", requireSignIn, isAdmin, testController);
 //@desc: update profile
 //@endpoint: /api/v1/auth/profile
 router.put("/profile", requireSignIn, updateProfileController);
+
+//@desc:Users get All orders
+//@endpoint: /api/v1/auth/orders
+router.get("/orders", requireSignIn, getOrdersController);
+
+//@desc:Admin get All orders
+//@endpoint: /api/v1/auth/all-orders
+router.get("/all-orders", requireSignIn, isAdmin, getAllOrdersController);
+
+//@desc:Admin update Order Shipping status
+//@endpoint: /api/v1/auth/order-status/:orderId
+router.put(
+  "/order-status/:orderId",
+  requireSignIn,
+  isAdmin,
+  setOrderStatusController
+);
 
 export default router;
